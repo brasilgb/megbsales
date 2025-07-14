@@ -10,13 +10,22 @@ export default function ProtectedLayout() {
     return null;
   }
 
-  // if (!isLoggedIn) {
-  //   return <Redirect href="/login" />;
-  // }
+  if (!isLoggedIn) {
+    return <Redirect href="/login" />;
+  }
 
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+      <Stack.Screen
+        name="addcustomer"
+        options={{ 
+          headerShown: false, 
+          animation: 'fade_from_bottom'
+        }}
+      />
+
     </Stack>
   );
 }
