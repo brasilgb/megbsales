@@ -17,5 +17,5 @@
     "src/types/nativewind-env.d.ts",
     "nativewind-env.d.ts",
     "expo-env.d.ts"
-, "src/lib/firebaseConfig.ts"  ]
+, "FirebaseConfig.ts"  ]
 }

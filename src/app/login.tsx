@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Text } from '@/components/Text';
-import { View, Image } from 'react-native';
+import { View, Image, KeyboardAvoidingView, Platform } from 'react-native';
 import { z } from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { Link } from 'expo-router';
-import { auth } from '@/lib/firebaseConfig';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Link, router } from 'expo-router';
+import { auth } from '../../FirebaseConfig';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
 
 // const schema = z.object({
 //     email: z.string().email('Email inválido'),
@@ -19,19 +19,26 @@ export default function LoginScreen() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = async () => {
+    const signIn = async () => {
         try {
-            signInWithEmailAndPassword(auth, email, password);
-            const user = auth.currentUser;
-            console.log('Usuário logado:', user);
+            const user = await signInWithEmailAndPassword(auth, email, password);
+            if (user) router.replace('/(protected)/(tabs)');
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
+            console.error('SignIn failed:', error);
+        }
+    };
+
+    const signUp = async () => {
+        try {
+            const user = createUserWithEmailAndPassword(auth, email, password);
+        } catch (error) {
+            console.error('SignUp failed:', error);
         }
     };
 
 
     return (
-        <View className='flex-1 flex-col items-center justify-center p-4'>
+        <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className='flex-1 flex-col items-center justify-center p-4'>
             <View className='w-full gap-4'>
                 <View className='flex-col items-center justify-center'>
                     <Image source={require('@/assets/logo.png')} className='w-40 h-40' />
@@ -41,18 +48,21 @@ export default function LoginScreen() {
                 </View>
                 <View>
                     <Input
-
                         placeholder='E-mail'
+                        value={email}
+                        onChangeText={setEmail}
                     />
                 </View>
                 <View>
                     <Input
-
                         placeholder='Senha'
+                        value={password}
+                        onChangeText={setPassword}
+                        secureTextEntry={true}
                     />
                 </View>
                 <View>
-                    <Button>
+                    <Button variant='default' onPress={signIn}>
                         <Text>
                             Entrar
                         </Text>
@@ -63,6 +73,6 @@ export default function LoginScreen() {
                     <Link className='text-blue-800 underline' href="/(protected)/addcustomer">Registrar</Link>
                 </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 }
