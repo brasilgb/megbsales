@@ -5,9 +5,8 @@ import { z } from 'zod';
 import { useAuth } from '@/contexts/AuthContext';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { Link, router } from 'expo-router';
-import { auth } from '../../FirebaseConfig';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { Link } from 'expo-router';
+
 
 // const schema = z.object({
 //     email: z.string().email('Email inválido'),
@@ -15,27 +14,14 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 // });
 
 export default function LoginScreen() {
+    const { logIn } = useAuth();
+    const [email, setEmail] = useState<any>('');
+    const [password, setPassword] = useState<any>('');
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-
-    const signIn = async () => {
-        try {
-            const user = await signInWithEmailAndPassword(auth, email, password);
-            if (user) router.replace('/(protected)/(tabs)');
-        } catch (error) {
-            console.error('SignIn failed:', error);
-        }
-    };
-
-    const signUp = async () => {
-        try {
-            const user = createUserWithEmailAndPassword(auth, email, password);
-        } catch (error) {
-            console.error('SignUp failed:', error);
-        }
-    };
-
+    async function handleLogin() {
+        const response = await logIn( email, password );
+        console.log(response);
+    }
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} className='flex-1 flex-col items-center justify-center p-4'>
@@ -62,7 +48,7 @@ export default function LoginScreen() {
                     />
                 </View>
                 <View>
-                    <Button variant='default' onPress={signIn}>
+                    <Button variant='default' onPress={() => handleLogin()}>
                         <Text>
                             Entrar
                         </Text>

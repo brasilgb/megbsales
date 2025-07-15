@@ -1,3 +1,4 @@
+import apiconnect from "@/lib/apiconnect";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { SplashScreen, useRouter } from "expo-router";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -5,7 +6,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 type AuthContext = {
     isLoggedIn: boolean;
     isReady: boolean;
-    logIn: () => void;
+    logIn: any;
     logOut: () => void;
 }
 
@@ -34,7 +35,18 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
-    function logIn() {
+    async function logIn( email: any, password: any ) {
+        console.log(apiconnect);
+        
+        try {
+            const response = await apiconnect.post('auth/login', {
+                email: email,
+                password: password
+            });
+            console.log(response.data);
+        } catch (error) {
+            console.log(error);
+        }
         setIsLoggedIn(true);
         storeAuthState({ isLoggedIn: true });
     }
