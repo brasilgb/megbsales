@@ -8,6 +8,7 @@ type AuthContext = {
     isReady: boolean;
     logIn: any;
     logOut: () => void;
+    user: any;
 }
 
 SplashScreen.preventAutoHideAsync();
@@ -17,15 +18,31 @@ export const AuthContext = createContext<AuthContext>({
     isReady: false,
     logIn: () => { },
     logOut: () => { },
+    user: null,
 });
 
 const AUTH_STATE_KEY = 'isLoggedIn';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+    const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isReady, setIsReady] = useState(false);
+    const [user, setUser] = useState<any>(null);
 
-    const router = useRouter();
+    useEffect(() => {
+        async function loadUser() {
+            try {
+                const userData = await AsyncStorage.getItem('DATA_USER');
+                if (userData) {
+                    setUser(JSON.parse(userData));
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        }
+        loadUser();
+    }, [AsyncStorage]);
+
 
     async function storeAuthState(newState: { isLoggedIn: boolean }) {
         try {
@@ -36,22 +53,32 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     async function logIn( email: any, password: any ) {
-        console.log(apiconnect);
         
         try {
             const response = await apiconnect.post('auth/login', {
                 email: email,
                 password: password
             });
-            console.log(response.data);
+            const { success, token, user } = response.data;
+            let dataUser = {
+                token: token,
+                user: user
+            }
+            if (success) {
+                console.log(dataUser);
+                
+                await AsyncStorage.setItem('DATA_USER', JSON.stringify(dataUser));
+                setIsLoggedIn(true);
+                storeAuthState({ isLoggedIn: true });
+                router.replace('/(protected)/(tabs)');
+            }
         } catch (error) {
             console.log(error);
         }
-        setIsLoggedIn(true);
-        storeAuthState({ isLoggedIn: true });
     }
 
-    function logOut() {
+    async function logOut() {
+        await AsyncStorage.setItem('DATA_USER', '');
         setIsLoggedIn(false);
         storeAuthState({ isLoggedIn: false });
     }
@@ -80,7 +107,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [isReady]);
 
     return (
-        <AuthContext.Provider value={{ isLoggedIn, isReady, logIn, logOut }}>
+        <AuthContext.Provider value={{ isLoggedIn, isReady, logIn, logOut, user }}>
             {children}
         </AuthContext.Provider>
     )

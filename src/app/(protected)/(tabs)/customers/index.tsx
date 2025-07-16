@@ -223,7 +223,7 @@ export default function Customers() {
       <View className='flex-row items-center justify-between gap-2'>
         <Input placeholder='Search' className='flex-1' />
         <Button>
-          <Link href='/(protected)/addcustomer'>
+          <Link href='/(protected)/customers/addcustomer'>
             <Plus size={16} color={'white'} />
           </Link>
         </Button>

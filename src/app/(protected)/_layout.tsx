@@ -1,3 +1,4 @@
+import HeaderStack from '@/components/HeaderStack';
 import { useAuth } from '@/contexts/AuthContext';
 import { Redirect, Stack } from 'expo-router';
 
@@ -10,12 +11,12 @@ export default function ProtectedLayout() {
     return null;
   }
 
-  if (!isLoggedIn) {
-    return <Redirect href="/login" />;
-  }
+  // if (!isLoggedIn) {
+  //   return <Redirect href="/login" />;
+  // }
 
   return (
-    <Stack>
+    <Stack screenOptions={{ header: HeaderStack}}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
       <Stack.Screen

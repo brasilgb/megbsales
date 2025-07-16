@@ -19,8 +19,7 @@ export default function LoginScreen() {
     const [password, setPassword] = useState<any>('');
 
     async function handleLogin() {
-        const response = await logIn( email, password );
-        console.log(response);
+        const response = await logIn(email, password);
     }
 
     return (

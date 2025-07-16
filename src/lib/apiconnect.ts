@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 const apiconnect = axios.create({
-    baseURL: "http://172.16.1.67:8000/api/",
+    baseURL: `${process.env.EXPO_PUBLIC_SERVER_API}`,
+    withCredentials: true,
     headers: {
         "Content-Type": "application/json",
         Accept: "Application/json",
