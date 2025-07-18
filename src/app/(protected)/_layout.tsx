@@ -16,11 +16,18 @@ export default function ProtectedLayout() {
   // }
 
   return (
-    <Stack screenOptions={{ header: HeaderStack}}>
+    <Stack initialRouteName='addproduct/index' screenOptions={{ header: HeaderStack}}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
       <Stack.Screen
-        name="addcustomer"
+        name="addcustomer/index"
+        options={{ 
+          headerShown: false, 
+          animation: 'fade_from_bottom'
+        }}
+      />
+      <Stack.Screen
+        name="addproduct/index"
         options={{ 
           headerShown: false, 
           animation: 'fade_from_bottom'

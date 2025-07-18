@@ -10,7 +10,6 @@ import { View } from 'react-native';
 
 
 export default function Home() {
-
   const { user } = useAuth();
   return (
     <View className='flex-1 items-center justify-start p-4'>
@@ -42,19 +41,19 @@ export default function Home() {
         <View className='flex-row flex-wrap gap-4 items-center'>
           <Link href='/orders' asChild>
             <Button variant={'default'} className='flex-row items-center justify-center gap-1'>
-              <Plus color="white" />
+              <Plus color="white" size={14} />
               <Text>Pedido</Text>
             </Button>
           </Link>
           <Link href='/orders'>
             <Button variant={'default'} className='flex-row items-center justify-center gap-1'>
-              <Plus color="white" />
+              <Plus color="white" size={14} />
               <Text>Produto</Text>
             </Button>
           </Link>
           <Link href='/orders'>
             <Button variant={'default'} className='flex-row items-center justify-center gap-1'>
-              <Plus color="white" />
+              <Plus color="white" size={14} />
               <Text>Cliente</Text>
             </Button>
           </Link>
@@ -62,13 +61,12 @@ export default function Home() {
         <View className='flex-row flex-wrap gap-4 items-center mt-8'>
           <Link href='/orders' className='w-full' asChild>
             <Button variant={'outline'} className='flex-row text-3xl items-center justify-center gap-1 w-full'>
-              <User color="gray" />
+              <User color="gray" size={18} />
               <Text>Meus dados</Text>
             </Button>
           </Link>
         </View>
       </View>
-
     </View>
   );
 }

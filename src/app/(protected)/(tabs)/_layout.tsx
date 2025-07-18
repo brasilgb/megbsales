@@ -37,7 +37,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
-      initialRouteName='index'
+
       screenOptions={{
         tabBarHideOnKeyboard: true,
         // headerShown: false,
