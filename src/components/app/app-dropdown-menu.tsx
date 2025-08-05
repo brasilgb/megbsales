@@ -13,14 +13,21 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { LogOut, User } from "lucide-react"
+import { ChevronDown, LogOut, User } from "lucide-react"
 
 export default function AppDropDownMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" asChild>
-          <User className="h-6 w-6 text-gray-600" />
+        <Button variant="ghost" className="flex items-center gap-2">
+          <div className="h-8 w-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center">
+            <User className="h-4 w-4" />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-sm font-medium">Admin User</span>
+            <span className="text-xs text-muted-foreground">admin@ordersystem.com</span>
+          </div>
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="start">
