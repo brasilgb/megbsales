@@ -60,7 +60,6 @@ console.log(values);
       form.reset(); // Limpa o formulário
       onSuccess?.(); // Chama o callback para, por exemplo, fechar o modal
     } catch (error) {
-      console.error("Erro no formulário:", error);
       toast("Erro",
         {
           description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido.",
