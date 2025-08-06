@@ -13,7 +13,7 @@ export default function AppLayout({ children }: AppProps) {
         <SidebarProvider>
             <AppSidebar />
             <main className='min-h-screen flex flex-col w-full'>
-                <SidebarTrigger className='absolute sm:top-5' />
+                <SidebarTrigger className='absolute sm:top-5 top-3' />
                 <AppHeader />
                 <div className='flex-grow'>
                     {children}

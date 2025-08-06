@@ -10,25 +10,26 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AddClientForm } from "./AddClientForm";
-import { Plus } from 'lucide-react';
+import { EditClientForm } from "./EditClientForm";
+import { Edit, Plus } from 'lucide-react';
 
-export function AddClientModal() {
+export function EditClientModal({ customer }: any) {
     const [open, setOpen] = useState(false);
+console.log('customer', customer);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button><Plus className="h-6 w-6" /> Cliente</Button>
+                <Button><Edit className="h-6 w-6" /></Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px] md:max-w-4xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Cadastro de Cliente</DialogTitle>
+                    <DialogTitle>Alteração de Cliente</DialogTitle>
                     <DialogDescription>
-                        Preencha todos os campos abaixo para cadastrar um novo cliente.
+                        Altere os campos abaixo para alterar os dados do cliente.
                     </DialogDescription>
                 </DialogHeader>
-                <AddClientForm onSuccess={() => setOpen(false)} />
+                <EditClientForm onSuccess={() => setOpen(false)} customer={customer} />
             </DialogContent>
         </Dialog>
     );

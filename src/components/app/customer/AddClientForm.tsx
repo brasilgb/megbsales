@@ -8,19 +8,20 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Loader2 } from "lucide-react";
+import { CalendarIcon, Loader2, Save } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { toast } from "sonner"
 import { useState } from "react";
 import { CustomerFormData, customerSchema } from "@/lib/validators/customerSchema";
+import { maskCep, maskCpfCnpj, maskPhone } from "@/lib/mask";
 
 interface ClientFormProps {
   onSuccess?: () => void; // Callback para fechar o modal
 }
 
-export function ClientForm({ onSuccess }: ClientFormProps) {
+export function AddClientForm({ onSuccess }: ClientFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<CustomerFormData>({
@@ -34,9 +35,6 @@ export function ClientForm({ onSuccess }: ClientFormProps) {
 
   async function onSubmit(values: CustomerFormData) {
     setIsLoading(true);
-console.log(values);
-
-
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers`, {
         method: 'POST',
@@ -62,8 +60,7 @@ console.log(values);
     } catch (error) {
       toast("Erro",
         {
-          description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido.",
-          variant: "destructive",
+          description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
         });
     } finally {
       setIsLoading(false);
@@ -85,7 +82,7 @@ console.log(values);
           <FormField control={form.control} name="cpf_cnpj" render={({ field }) => (
             <FormItem>
               <FormLabel>CPF/CNPJ</FormLabel>
-              <FormControl><Input placeholder="000.000.000-00" {...field} /></FormControl>
+              <FormControl><Input placeholder="000.000.000-00" {...field} value={maskCpfCnpj(field.value)} maxLength={18} /></FormControl>
               <FormMessage />
             </FormItem>
           )} />
@@ -103,7 +100,7 @@ console.log(values);
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                      {field.value ? format(field.value, "PPP", { locale: ptBR }) : <span>Escolha uma data</span>}
+                      {field.value ? format(field.value, "dd/MM/yyyy", { locale: ptBR }) : <span>Escolha uma data</span>}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -121,7 +118,7 @@ console.log(values);
             <FormField control={form.control} name="zip_code" render={({ field }) => (
               <FormItem className="md:col-span-1">
                 <FormLabel>CEP</FormLabel>
-                <FormControl><Input placeholder="00000-000" {...field} /></FormControl>
+                <FormControl><Input placeholder="00000-000" {...field} value={maskCep(field.value)} maxLength={9} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -176,14 +173,14 @@ console.log(values);
             <FormField control={form.control} name="telephone" render={({ field }) => (
               <FormItem>
                 <FormLabel>Telefone</FormLabel>
-                <FormControl><Input placeholder="(11) 99999-9999" {...field} /></FormControl>
+                <FormControl><Input placeholder="(11) 99999-9999" {...field} value={maskPhone(field.value)} maxLength={15} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
             <FormField control={form.control} name="whatsapp" render={({ field }) => (
               <FormItem>
                 <FormLabel>WhatsApp</FormLabel>
-                <FormControl><Input placeholder="(11) 99999-9999" {...field} /></FormControl>
+                <FormControl><Input placeholder="5511999999999" {...field} maxLength={13} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -197,7 +194,7 @@ console.log(values);
             <FormField control={form.control} name="contact_telephone" render={({ field }) => (
               <FormItem>
                 <FormLabel>Telefone do Contato</FormLabel>
-                <FormControl><Input placeholder="(11) 88888-8888" {...field} /></FormControl>
+                <FormControl><Input placeholder="(11) 88888-8888" {...field} value={maskPhone(field.value)} maxLength={15} /></FormControl>
                 <FormMessage />
               </FormItem>
             )} />
@@ -211,11 +208,15 @@ console.log(values);
             </FormItem>
           )} />
         </div>
-
-        <Button type="submit" className="w-full" disabled={isLoading}>
-          {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isLoading ? "Salvando..." : "Salvar Cliente"}
-        </Button>
+        <div className="flex items-center justify-between">
+          <Button type="button" variant="outline" onClick={() => onSuccess?.()}>
+            Cancelar
+          </Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            {isLoading ? "Salvando..." : "Salvar"}
+          </Button>
+        </div>
       </form>
     </Form>
   );
