@@ -30,6 +30,20 @@ export function AddClientForm({ onSuccess }: ClientFormProps) {
     defaultValues: {
       name: "",
       email: "",
+      cpf_cnpj: "",
+      birth_date: new Date(),
+      zip_code: "",
+      state: "",
+      city: "",
+      street: "",
+      district: "",
+      number: "",
+      complement: "",
+      telephone: "",
+      whatsapp: "",
+      contact_name: "",
+      contact_telephone: "",
+      observations: ""
     },
   });
 

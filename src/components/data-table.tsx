@@ -28,14 +28,14 @@ import { ArrowLeft, ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } fro
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
-  data: any
-  botaoAdd: any
+  data: any,
+  addButton?: any
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
-  botaoAdd
+  addButton
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -68,7 +68,7 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
-        {botaoAdd}
+        {addButton}
       </div>
       <div className="rounded-md border">
         <Table>

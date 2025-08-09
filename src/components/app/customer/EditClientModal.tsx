@@ -15,7 +15,6 @@ import { Edit, Plus } from 'lucide-react';
 
 export function EditClientModal({ customer }: any) {
     const [open, setOpen] = useState(false);
-console.log('customer', customer);
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>

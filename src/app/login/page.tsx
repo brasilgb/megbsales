@@ -58,15 +58,14 @@ export default function LoginPage() {
       }
 
       const result = await response.json()
-      console.log('result', result);
       
       // Salvar token no localStorage ou cookie se necessário
       if (result.user) {
-        localStorage.setItem("authUser", result.user)
+        localStorage.setItem("authUser", JSON.stringify(result.user.data))
       }
 
       // Redirecionar para dashboard ou página principal
-      router.push("/")
+      router.push("/app")
     } catch (error) {
       setApiError(error instanceof Error ? error.message : "Erro interno do servidor")
     } finally {

@@ -6,8 +6,7 @@ import { ArrowUpDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Customer } from "@/types/typesapp"
 import { EditClientModal } from "@/components/app/customer/EditClientModal"
-
-
+import { maskCpfCnpj } from "@/lib/mask"
 
 export const columns: ColumnDef<Customer>[] = [
 
@@ -42,10 +41,10 @@ export const columns: ColumnDef<Customer>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
-    accessorKey: "cpfCnpj",
+    accessorKey: "cpf_cnpj",
     header: () => <div className="text-left">CPF/CNPJ</div>,
     cell: ({ row }) => {
-      return <div className="text-left font-medium">{row.getValue("cpfCnpj")}</div>
+      return <div className="text-left font-medium">{maskCpfCnpj(row.getValue("cpf_cnpj"))}</div>
     },
   },
   {

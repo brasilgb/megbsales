@@ -21,7 +21,19 @@ export interface Customer {
   updated_at?: string
 }
 
+export interface Product {
+  id?: string,
+  user_id: string
+  name: string
+  reference: string
+  description: string
+  unity: string
+  measure: string
+  price: string
+  enabled: string
+}
+
 export interface BreadcrumbItem {
-    title: string;
-    href: string;
+  title: string;
+  href: string;
 }

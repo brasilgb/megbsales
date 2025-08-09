@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
     // Aqui você pode fazer uma chamada para verificar o token
     // e buscar dados do usuário
-    setUserApp(user)
+    setUserApp(user && JSON.parse(user))
 
   }, [router])
 
@@ -31,7 +31,6 @@ export default function DashboardPage() {
   if (!userApp) {
     return <div>Carregando...</div>
   }
-console.log('user', userApp);
 
   return (
     <div className="min-h-screen bg-gray-50 p-4">
@@ -42,8 +41,8 @@ console.log('user', userApp);
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {/* <p>Bem-vindo, {userApp.data.name}!</p>
-              <p>Email: {userApp.data.email}</p> */}
+              <p>Bem-vindo, {userApp.name}!</p>
+              <p>Email: {userApp.email}</p>
               <Button onClick={handleLogout} variant="outline">
                 Sair
               </Button>

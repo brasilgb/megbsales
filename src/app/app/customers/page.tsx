@@ -1,12 +1,10 @@
 import { DataTable } from '@/components/data-table'
 import { columns } from "./columns"
 import React from 'react'
-import { data } from './data'
 import { AddClientModal } from '@/components/app/customer/AddClientModal'
 import { User } from 'lucide-react'
 import { BreadcrumbItem } from '@/types/typesapp'
 import { Breadcrumbs } from '@/components/breadcrumbs'
-import { get } from 'http'
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -42,7 +40,7 @@ async function getCustomers() {
 }
 
 export default async function Customers() {
-  const {data, error} = await getCustomers();
+  const {data} = await getCustomers();
   return (
     <div className="sm:p-6 p-2">
       <div className='flex justify-beetween items-center'>
