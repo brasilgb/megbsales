@@ -1,10 +1,10 @@
 "use client";
 
-import { Package } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { BreadcrumbItem } from '@/types/typesapp';
-import { ProductForm } from '@/components/app/product/ProductForm';
+import { CustomerForm } from '@/components/app/customer/CustomerForm';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -12,24 +12,24 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/',
     },
     {
-        title: 'Produtos',
-        href: '/app/products',
+        title: 'Clientes',
+        href: '/app/customers',
     },
     {
-        title: 'Adicionar Produtos',
+        title: 'Adicionar Clientes',
         href: '#',
     },
-];
+]; 
 
-export default function AddProduct() {
+export default function AddCustomer() {
 
     return (
         <div className="sm:p-6 p-2">
             <div className='flex justify-beetween items-center'>
                 <div className='flex-1'>
                     <h1 className="text-2xl font-bold flex items-center gap-2">
-                        <Package className="h-6 w-6" />
-                        Produtos
+                        <User className="h-6 w-6" />
+                        Clientes
                     </h1>
                 </div>
                 <div className='flex-1 flex justify-end'>
@@ -37,7 +37,7 @@ export default function AddProduct() {
                 </div>
             </div>
             <Card className='p-4 mt-4'>
-                <ProductForm />
+                <CustomerForm />
             </Card>
         </div>
     );

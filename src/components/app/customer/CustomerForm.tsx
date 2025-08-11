@@ -21,7 +21,7 @@ interface ClientFormProps {
   onSuccess?: () => void; // Callback para fechar o modal
 }
 
-export function AddClientForm({ onSuccess }: ClientFormProps) {
+export function CustomerForm({ onSuccess }: ClientFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<CustomerFormData>({

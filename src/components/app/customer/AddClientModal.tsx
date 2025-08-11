@@ -10,7 +10,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { AddClientForm } from "./AddClientForm";
+import { AddClientForm } from "./CustomerForm";
 import { Plus } from 'lucide-react';
 
 export function AddClientModal() {

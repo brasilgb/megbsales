@@ -1,10 +1,12 @@
-import { DataTable } from '@/components/data-table'
-import { columns } from "./columns"
-import React from 'react'
-import { AddClientModal } from '@/components/app/customer/AddClientModal'
-import { User } from 'lucide-react'
-import { BreadcrumbItem } from '@/types/typesapp'
+'use client'
 import { Breadcrumbs } from '@/components/breadcrumbs'
+import { DataTable } from '@/components/data-table';
+import { BreadcrumbItem, Customer } from '@/types/typesapp';
+import { Package, Plus, User } from 'lucide-react'
+import React, { useEffect, useState } from 'react'
+import { columns } from './columns';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const breadcrumbs: BreadcrumbItem[] = [
   {
@@ -17,30 +19,36 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-async function getCustomers() {
-  const headers = {
-    'Content-Type': 'application/json',
-    // 'Authorization': `Bearer ${token}`,
-  };
+export default function Customers() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataCustomers, setDataCustomers] = useState<Customer | []>([]);
+  let customerId = localStorage.getItem('customerid');
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers`, {
-    method: 'GET',
-    headers: headers,
-  });
+  const getCustomers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-  if (!response.ok) {
-    // Handle unauthorized or other errors
-    if (response.status === 401) {
-      // Potentially refresh token or redirect to login
+      const { data } = await response.json();
+      const newData = data.filter((item: any) => item.id !== customerId);
+      setDataCustomers(customerId ? newData : data);
+
+    } catch (error) {
+      console.error('Erro ao buscar produtos:', error);
+    } finally {
+      setIsLoading(false);
     }
-    throw new Error(`HTTP error! status: ${response.status}`);
   }
 
-  return response.json();
-}
+  useEffect(() => {
+    getCustomers();
+  }, [customerId]);
 
-export default async function Customers() {
-  const {data} = await getCustomers();
   return (
     <div className="sm:p-6 p-2">
       <div className='flex justify-beetween items-center'>
@@ -54,7 +62,7 @@ export default async function Customers() {
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
       </div>
-      <DataTable columns={columns} data={data} botaoAdd={<AddClientModal />} />
+      <DataTable columns={columns} data={dataCustomers} addButton={<Button asChild><Link href="/app/customers/create"><Plus className="h-6 w-6" /> Produto</Link></Button>} />
     </div>
   )
 }

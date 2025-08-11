@@ -1,14 +1,26 @@
+'use client'
 import AppFooter from '@/components/app/app-footer'
 import AppHeader from '@/components/app/app-header'
 import { AppSidebar } from '@/components/app/app-sidebar'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
-import React from 'react'
+import { useRouter } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 interface AppProps {
     children: React.ReactNode
 }
 
 export default function AppLayout({ children }: AppProps) {
+const router = useRouter();
+        useEffect(() => {
+      // Verificar se o usuário está autenticado
+      const user = localStorage.getItem("authUser")
+      if (!user) {
+        router.push("/login")
+        return
+      }
+    }, [router])
+    
     return (
         <SidebarProvider>
             <AppSidebar />

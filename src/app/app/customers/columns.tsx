@@ -1,12 +1,14 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, Edit } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Customer } from "@/types/typesapp"
 import { EditClientModal } from "@/components/app/customer/EditClientModal"
 import { maskCpfCnpj } from "@/lib/mask"
+import Link from "next/link"
+import DeleteButton from "@/components/app/app-delete"
 
 export const columns: ColumnDef<Customer>[] = [
 
@@ -54,10 +56,12 @@ export const columns: ColumnDef<Customer>[] = [
       const customer = row.original
       return (
         <div className="flex justify-end gap-2">
-          <EditClientModal customer={row.original} />
-          <Button onClick={() => alert(`Excluindo: ${customer.name}`)} className="text-red-600">
-            Excluir
+          <Button asChild>
+            <Link href={`/app/customers/edit/${customer.id}`}>
+              <Edit className="h-4 w-4" />
+            </Link>
           </Button>
+          <DeleteButton itemid={customer.id} action="este produto" url="/app/customers" />
         </div>
       )
     },

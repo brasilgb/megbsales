@@ -6,6 +6,8 @@ import { ArrowUpDown, Edit } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Product } from "@/types/typesapp"
 import Link from "next/link"
+import { Badge } from "@/components/ui/badge"
+import DeleteButton from "@/components/app/app-delete"
 
 export const columns: ColumnDef<Product>[] = [
 
@@ -62,6 +64,13 @@ export const columns: ColumnDef<Product>[] = [
     },
   },
   {
+    accessorKey: "enabled",
+    header: () => <div className="text-left">Ativo</div>,
+    cell: ({ row }) => {
+      return <div className="text-left font-medium">{row.getValue("enabled") ? <Badge className="bg-green-500 text-white">Sim</Badge> : <Badge className="bg-red-500 text-white">Não</Badge>}</div>
+    },
+  },
+  {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
@@ -70,12 +79,10 @@ export const columns: ColumnDef<Product>[] = [
         <div className="flex justify-end gap-2">
           <Button asChild>
             <Link href={`/app/products/edit/${product.id}`}>
-              <Edit className="h-6 w-6" />
+              <Edit className="h-4 w-4" />
             </Link>
           </Button>
-          <Button onClick={() => alert(`Excluindo: ${product.name}`)} className="text-red-600">
-            Excluir
-          </Button>
+          <DeleteButton itemid={product.id} action="este produto" url="/app/products" />
         </div>
       )
     },

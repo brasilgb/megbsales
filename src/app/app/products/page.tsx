@@ -22,6 +22,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Products() {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProducts, setDataProducts] = useState<Product | []>([]);
+  let productId = localStorage.getItem('productid');
 
   const getProducts = async () => {
     setIsLoading(true);
@@ -32,8 +33,11 @@ export default function Products() {
           'Content-Type': 'application/json',
         },
       });
+
       const { data } = await response.json();
-      setDataProducts(data);
+      const newData = data.filter((item: any) => item.id !== productId);
+      setDataProducts(productId ? newData : data);
+
     } catch (error) {
       console.error('Erro ao buscar produtos:', error);
     } finally {
@@ -43,7 +47,7 @@ export default function Products() {
 
   useEffect(() => {
     getProducts();
-  }, []);
+  }, [productId]);
 
   return (
     <div className="sm:p-6 p-2">

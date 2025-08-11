@@ -12,29 +12,34 @@ import { ProductFormData, productSchema } from "@/lib/validators/productSchema";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
 
-export function AddProductForm() {
+type ProductFormProps = {
+  product?: ProductFormData & { id: string }
+}
+export function ProductForm({product}: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false);
 const router = useRouter();
 
   const form = useForm<ProductFormData>({
-    resolver: zodResolver(productSchema),
     // Valores padrão, se necessário
-    defaultValues: {
-      name: "",
-      reference: "",
-      description: "",
-      unity: "",
-      measure: "",
-      price: "",
-      enabled: false
-    },
+    defaultValues: product ? {
+      name: product?.name,
+      reference: product?.reference,
+      description: product?.description,
+      unity: product?.unity,
+      measure: product?.measure,
+      price: product?.price,
+      enabled: product?.enabled
+    }
+    : undefined,
+    resolver: zodResolver(productSchema),
   });
 
   async function onSubmit(values: ProductFormData) {
     setIsLoading(true);
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
-        method: 'POST',
+    if (product) {
+      try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products/${product.id}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
@@ -45,14 +50,14 @@ const router = useRouter();
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Falha ao cadastrar produto.');
+        throw new Error(result.error || 'Falha ao editar produto.');
       }
 
       toast("Sucesso!",
         {
-          description: "Produto cadastrado com sucesso.",
+          description: "Produto editado com sucesso.",
         });
-      form.reset();
+      
     } catch (error) {
       toast("Erro",
         {
@@ -60,7 +65,38 @@ const router = useRouter();
         });
       } finally {
         setIsLoading(false);
-        router.push("/app/products");
+    }
+    } else {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+          },
+          body: JSON.stringify(values),
+        });
+  
+        const result = await response.json();
+  
+        if (!response.ok) {
+          throw new Error(result.error || 'Falha ao cadastrar produto.');
+        }
+  
+        toast("Sucesso!",
+          {
+            description: "Produto cadastrado com sucesso.",
+          });
+        form.reset();
+      } catch (error) {
+        toast("Erro",
+          {
+            description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
+          });
+        } finally {
+          setIsLoading(false);
+          router.push("/app/products");
+      }
     }
   }
 
@@ -132,7 +168,7 @@ const router = useRouter();
           )} />
 
         </div>
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-end">
           <Button type="submit" disabled={isLoading}>
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
             {isLoading ? "Salvando..." : "Salvar"}

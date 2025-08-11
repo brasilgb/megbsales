@@ -1,8 +1,10 @@
-import { Package } from 'lucide-react';
+"use client";
+
+import { Package, User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { BreadcrumbItem } from '@/types/typesapp';
-import { ProductForm } from '@/components/app/product/ProductForm';
+import { CustomerForm } from '@/components/app/customer/CustomerForm';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -10,17 +12,17 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/',
     },
     {
-        title: 'Produtos',
-        href: '/app/products',
+        title: 'Clientes',
+        href: '/app/customers',
     },
     {
-        title: 'Adicionar Produtos',
+        title: 'Editar Clientes',
         href: '#',
     },
 ];
 
-async function getProductsForId(id: any) {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products/${id}`, {
+async function getCustomersForId(id: any) {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers/${id}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -31,18 +33,17 @@ async function getProductsForId(id: any) {
     return data?.data;
 }
 
-export default async function EditProduct({ params }: { params: Promise<{ id: string }> }) {
+export default async function EditCustomer({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params
 
-    const productsForId = await getProductsForId(id);
-
+    const customersForId = await getCustomersForId(id);
     return (
         <div className="sm:p-6 p-2">
             <div className='flex justify-beetween items-center'>
                 <div className='flex-1'>
                     <h1 className="text-2xl font-bold flex items-center gap-2">
-                        <Package className="h-6 w-6" />
-                        Produtos
+                        <User className="h-6 w-6" />
+                        Clientes
                     </h1>
                 </div>
                 <div className='flex-1 flex justify-end'>
@@ -50,7 +51,7 @@ export default async function EditProduct({ params }: { params: Promise<{ id: st
                 </div>
             </div>
             <Card className='p-4 mt-4'>
-                <ProductForm product={productsForId} />
+                <CustomerForm />
             </Card>
         </div>
     );
