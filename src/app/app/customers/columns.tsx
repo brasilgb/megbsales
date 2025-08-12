@@ -5,7 +5,6 @@ import { ArrowUpDown, Edit } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Customer } from "@/types/typesapp"
-import { EditClientModal } from "@/components/app/customer/EditClientModal"
 import { maskCpfCnpj } from "@/lib/mask"
 import Link from "next/link"
 import DeleteButton from "@/components/app/app-delete"
@@ -61,7 +60,7 @@ export const columns: ColumnDef<Customer>[] = [
               <Edit className="h-4 w-4" />
             </Link>
           </Button>
-          <DeleteButton itemid={customer.id} action="este produto" url="/app/customers" />
+          <DeleteButton itemid={customer.id} action="este cliente" url="/app/customers" />
         </div>
       )
     },

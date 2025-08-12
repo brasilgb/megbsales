@@ -11,13 +11,15 @@ import { useState } from "react";
 import { ProductFormData, productSchema } from "@/lib/validators/productSchema";
 import { Switch } from "@/components/ui/switch";
 import { useRouter } from "next/navigation";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { maskMoney } from "@/lib/mask";
 
 type ProductFormProps = {
   product?: ProductFormData & { id: string }
 }
-export function ProductForm({product}: ProductFormProps) {
+export function ProductForm({ product }: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false);
-const router = useRouter();
+  const router = useRouter();
 
   const form = useForm<ProductFormData>({
     // Valores padrão, se necessário
@@ -30,7 +32,7 @@ const router = useRouter();
       price: product?.price,
       enabled: product?.enabled
     }
-    : undefined,
+      : undefined,
     resolver: zodResolver(productSchema),
   });
 
@@ -38,34 +40,34 @@ const router = useRouter();
     setIsLoading(true);
     if (product) {
       try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products/${product.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
-        },
-        body: JSON.stringify(values),
-      });
-
-      const result = await response.json();
-
-      if (!response.ok) {
-        throw new Error(result.error || 'Falha ao editar produto.');
-      }
-
-      toast("Sucesso!",
-        {
-          description: "Produto editado com sucesso.",
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products/${product.id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            // 'Authorization': `Bearer ${process.env.NEXT_PUBLIC_API_TOKEN}`
+          },
+          body: JSON.stringify(values),
         });
-      
-    } catch (error) {
-      toast("Erro",
-        {
-          description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
-        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.error || 'Falha ao editar produto.');
+        }
+
+        toast.success("Sucesso!",
+          {
+            description: "Produto editado com sucesso.",
+          });
+
+      } catch (error) {
+        toast.error("Erro",
+          {
+            description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
+          });
       } finally {
         setIsLoading(false);
-    }
+      }
     } else {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
@@ -76,26 +78,26 @@ const router = useRouter();
           },
           body: JSON.stringify(values),
         });
-  
+
         const result = await response.json();
-  
+
         if (!response.ok) {
           throw new Error(result.error || 'Falha ao cadastrar produto.');
         }
-  
-        toast("Sucesso!",
+
+        toast.success("Sucesso!",
           {
             description: "Produto cadastrado com sucesso.",
           });
         form.reset();
       } catch (error) {
-        toast("Erro",
+        toast.error("Erro",
           {
             description: error instanceof Error ? error.message : "Ocorreu um erro desconhecido."
           });
-        } finally {
-          setIsLoading(false);
-          router.push("/app/products");
+      } finally {
+        setIsLoading(false);
+        router.push("/app/products");
       }
     }
   }
@@ -132,7 +134,23 @@ const router = useRouter();
           <FormField control={form.control} name="unity" render={({ field }) => (
             <FormItem className="md:col-span-1">
               <FormLabel>Unidade de medida</FormLabel>
-              <FormControl><Input placeholder="Kg" {...field} /></FormControl>
+              <FormControl>
+                <Select  {...field}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Medidas" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="kg">Kg</SelectItem>
+                    <SelectItem value="litro">Litro</SelectItem>
+                    <SelectItem value="caixa">Caixa</SelectItem>
+                    <SelectItem value="saco">Saco</SelectItem>
+                    <SelectItem value="unidade">Unidade</SelectItem>
+                    <SelectItem value="metro">Metro</SelectItem>
+                    <SelectItem value="metroq">Metro quadrado</SelectItem>
+                    <SelectItem value="metroc">Metro cúbico</SelectItem>
+                  </SelectContent>
+                </Select>
+              </FormControl>
               <FormMessage />
             </FormItem>
           )} />
@@ -146,7 +164,7 @@ const router = useRouter();
           <FormField control={form.control} name="price" render={({ field }) => (
             <FormItem>
               <FormLabel>Preço</FormLabel>
-              <FormControl><Input placeholder="0.00" {...field} /></FormControl>
+              <FormControl><Input placeholder="0.00" {...field} value={maskMoney(`${field.value}`)} /></FormControl>
               <FormMessage />
             </FormItem>
           )} />

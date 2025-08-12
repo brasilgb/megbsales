@@ -14,7 +14,7 @@ const breadcrumbs: BreadcrumbItem[] = [
         href: '/app/products',
     },
     {
-        title: 'Adicionar Produtos',
+        title: 'Editar Produtos',
         href: '#',
     },
 ];

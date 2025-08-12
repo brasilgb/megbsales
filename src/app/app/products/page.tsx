@@ -22,32 +22,34 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Products() {
   const [isLoading, setIsLoading] = useState(false);
   const [dataProducts, setDataProducts] = useState<Product | []>([]);
-  let productId = localStorage.getItem('productid');
-
-  const getProducts = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const { data } = await response.json();
-      const newData = data.filter((item: any) => item.id !== productId);
-      setDataProducts(productId ? newData : data);
-
-    } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   useEffect(() => {
+    let productId = localStorage.getItem('productid');
+
+    const getProducts = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}products`, {
+          cache: 'no-store',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const { data } = await response.json();
+        const newData = data?.filter((item: any) => item.id !== productId);
+        setDataProducts(productId ? newData : data);
+
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     getProducts();
-  }, [productId]);
+  }, []);
 
   return (
     <div className="sm:p-6 p-2">
@@ -62,7 +64,7 @@ export default function Products() {
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
       </div>
-      <DataTable columns={columns} data={dataProducts} addButton={<Button asChild><Link href="/app/products/create"><Plus className="h-6 w-6" /> Produto</Link></Button>} />
+      <DataTable columns={columns} data={dataProducts} addButton={<Button asChild><Link href="/app/products/create"><Plus className="h-6 w-6" />Produto</Link></Button>} />
     </div>
   )
 }

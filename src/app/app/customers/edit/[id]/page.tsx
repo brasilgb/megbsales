@@ -1,6 +1,4 @@
-"use client";
-
-import { Package, User } from 'lucide-react';
+import { User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { BreadcrumbItem } from '@/types/typesapp';
@@ -37,6 +35,7 @@ export default async function EditCustomer({ params }: { params: Promise<{ id: s
     const { id } = await params
 
     const customersForId = await getCustomersForId(id);
+
     return (
         <div className="sm:p-6 p-2">
             <div className='flex justify-beetween items-center'>
@@ -51,7 +50,7 @@ export default async function EditCustomer({ params }: { params: Promise<{ id: s
                 </div>
             </div>
             <Card className='p-4 mt-4'>
-                <CustomerForm />
+                <CustomerForm customer={customersForId} />
             </Card>
         </div>
     );

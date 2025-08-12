@@ -22,32 +22,32 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Customers() {
   const [isLoading, setIsLoading] = useState(false);
   const [dataCustomers, setDataCustomers] = useState<Customer | []>([]);
-  let customerId = localStorage.getItem('customerid');
-
-  const getCustomers = async () => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      const { data } = await response.json();
-      const newData = data.filter((item: any) => item.id !== customerId);
-      setDataCustomers(customerId ? newData : data);
-
-    } catch (error) {
-      console.error('Erro ao buscar produtos:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   useEffect(() => {
+    let customerId = localStorage.getItem('customerid');
+    const getCustomers = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}customers`, {
+          cache: 'no-store',
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        const { data } = await response.json();
+        const newData = data?.filter((item: any) => item.id !== customerId);
+        setDataCustomers(customerId ? newData : data);
+
+      } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    }
     getCustomers();
-  }, [customerId]);
+  }, []);
 
   return (
     <div className="sm:p-6 p-2">
@@ -62,7 +62,7 @@ export default function Customers() {
           <Breadcrumbs breadcrumbs={breadcrumbs} />
         </div>
       </div>
-      <DataTable columns={columns} data={dataCustomers} addButton={<Button asChild><Link href="/app/customers/create"><Plus className="h-6 w-6" /> Produto</Link></Button>} />
+      <DataTable columns={columns} data={dataCustomers} addButton={<Button asChild><Link href="/app/customers/create"><Plus className="h-6 w-6" />Cliente</Link></Button>} />
     </div>
   )
 }
