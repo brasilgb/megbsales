@@ -1,8 +1,10 @@
-import { User } from 'lucide-react';
+import { ArrowLeft, User } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { BreadcrumbItem } from '@/types/typesapp';
 import { CustomerForm } from '@/components/app/customer/CustomerForm';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -46,7 +48,16 @@ export default async function EditCustomer({ params }: { params: Promise<{ id: s
                     </h1>
                 </div>
                 <div className='flex-1 flex justify-end'>
-                    <Breadcrumbs breadcrumbs={breadcrumbs} />
+                    <div className='sm:flex hidden'>
+                        <Breadcrumbs breadcrumbs={breadcrumbs} />
+                    </div>
+                    <div className='sm:hidden flex justify-end'>
+                        <Button asChild>
+                            <Link href={`/app/products`}>
+                                <ArrowLeft className="h-4 w-4" />
+                            </Link>
+                        </Button>
+                    </div>
                 </div>
             </div>
             <Card className='p-4 mt-4'>

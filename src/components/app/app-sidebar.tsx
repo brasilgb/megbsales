@@ -30,11 +30,12 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
+import { usePathname } from "next/navigation";
 
 export function AppSidebar() {
-
+const pathname = usePathname()
   const menuItems = [
-    { title: "Dashboard", url: "/app", icon: Home, isActive: true },
+    { title: "Dashboard", url: "/app", icon: Home },
     { title: "Pedidos", url: "/app/orders", icon: ShoppingCart, badge: "12" },
     { title: "Produtos", url: "/app/products", icon: Package },
     { title: "Clientes", url: "/app/customers", icon: Users },
@@ -60,10 +61,18 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup>
           <SidebarMenu>
-            {menuItems.map((item) => (
+            {menuItems.map((item) => {
+            const isActive = pathname === item.url
+            return(
               <SidebarMenuItem key={item.title}>
-                <SidebarMenuButton asChild isActive={item.isActive}>
-                  <Link href={item.url}>
+                <SidebarMenuButton asChild>
+                  <Link href={item.url}
+                  className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-semibold transition-colors ${
+                          isActive
+                            ? "bg-blue-700 text-white dark:bg-blue-900 dark:text-blue-100"
+                            : "text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                        }`}
+                  >
                     <item.icon className="h-4 w-4" />
                     <span>{item.title}</span>
                     {item.badge && (
@@ -74,7 +83,8 @@ export function AppSidebar() {
                   </Link>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            ))}
+            )}
+          )}
           </SidebarMenu>
         </SidebarGroup>
       </SidebarContent>

@@ -59,7 +59,9 @@ export default function Customers() {
           </h1>
         </div>
         <div className='flex-1 flex justify-end'>
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <div className='sm:flex hidden'>
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
+          </div>
         </div>
       </div>
       <DataTable columns={columns} data={dataCustomers} addButton={<Button asChild><Link href="/app/customers/create"><Plus className="h-6 w-6" />Cliente</Link></Button>} />

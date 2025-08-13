@@ -61,7 +61,9 @@ export default function Products() {
           </h1>
         </div>
         <div className='flex-1 flex justify-end'>
-          <Breadcrumbs breadcrumbs={breadcrumbs} />
+          <div className='sm:flex hidden'>
+            <Breadcrumbs breadcrumbs={breadcrumbs} />
+          </div>
         </div>
       </div>
       <DataTable columns={columns} data={dataProducts} addButton={<Button asChild><Link href="/app/products/create"><Plus className="h-6 w-6" />Produto</Link></Button>} />

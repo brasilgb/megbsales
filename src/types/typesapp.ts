@@ -37,3 +37,11 @@ export interface BreadcrumbItem {
   title: string;
   href: string;
 }
+
+export interface OrderItem {
+  order_id: string
+  product_id: string
+  quantity: string
+  price: string
+  total: string
+}
