@@ -44,4 +44,5 @@ export interface OrderItem {
   quantity: string
   price: string
   total: string
+  items: []
 }

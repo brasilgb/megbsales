@@ -17,6 +17,7 @@ import { maskMoney } from "@/lib/mask";
 type ProductFormProps = {
   product?: ProductFormData & { id: string }
 }
+
 export function ProductForm({ product }: ProductFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
