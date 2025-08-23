@@ -9,23 +9,11 @@ import {
   SidebarMenuItem
 } from "@/components/ui/sidebar"
 import {
-  Bell,
-  ChevronDown,
   Home,
   Package,
   ShoppingCart,
   Users,
   Settings,
-  LogOut,
-  User,
-  Plus,
-  Search,
-  Filter,
-  MoreHorizontal,
-  Eye,
-  Edit,
-  Trash2,
-  ChevronsUpDown,
   BookDashedIcon,
 } from "lucide-react";
 import Link from "next/link";
