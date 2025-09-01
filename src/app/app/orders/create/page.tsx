@@ -1,4 +1,4 @@
-import OrderForm from '@/components/app/order/OrderForm'
+import OrderForm from '@/components/app/Order/OrderForm'
 import { Breadcrumbs } from '@/components/breadcrumbs'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -47,6 +47,7 @@ async function getProducts() {
 }
 
 export default async function OrderCreate() {
+
     const allCustomers = await getCustomers();
     const allProducts = await getProducts();
 

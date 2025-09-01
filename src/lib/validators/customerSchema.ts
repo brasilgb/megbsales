@@ -11,7 +11,7 @@ const validateCpfCnpj = (num: string) => {
 export const customerSchema = z.object({
   // user_id: z.string().min(1, {error: "ID do usuário é obrigatório"),
   name: z.string({error: "Nome é obrigatório"}),
-  cnpj: z.string({error: "CPF/CNPJ é obrigatório"})
+  cpf_cnpj: z.string({error: "CPF/CNPJ é obrigatório"})
   .refine(value => validateCpfCnpj(value), {error: "CPF/CNPJ inválido!"}),
   birth_date: z.date({error: "Data de nascimento é obrigatória"}).optional(),
   email: z.email("Email inválido"),
